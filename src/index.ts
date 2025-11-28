@@ -19,9 +19,10 @@ export class MyMCP extends McpAgent {
 		this.server.tool(
 			"calculate",
 			{
-				operation: z.enum(["add", "subtract", "multiply", "divide"]),
+				operation: z.enum(["add", "subtract", "multiply", "divide", "power"]),
 				a: z.number(),
 				b: z.number(),
+				decimals: z.number().optional(), // Nouveau paramètre
 			},
 			async ({ operation, a, b }) => {
 				let result: number;
@@ -46,6 +47,9 @@ export class MyMCP extends McpAgent {
 								],
 							};
 						result = a / b;
+						break;
+					case "power":
+						result = Math.pow(a, b);
 						break;
 				}
 				return { content: [{ type: "text", text: String(result) }] };
